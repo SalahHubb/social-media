@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { assets } from "../assets/assets";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 const Feed = () => {
+  const { openCreateStoryModal } = useContext(AuthContext);
+
   const posts = [
     {
       id: 1,
@@ -193,9 +196,12 @@ const Feed = () => {
             <div className="overflow-x-auto pb-5 -mx-4 px-4">
               <div className="flex gap-4 min-w-max">
                 {stories.map((story) => (
-                  <div key={story.id} className="flex-shrink-0">
+                  <div key={story.id} className="shrink-0">
                     {story.type === "create" ? (
-                      <button className="w-[120px] h-[160px] rounded-lg border-2 border-dashed border-[#A3B3FF] bg-gradient-to-b from-[#EEF2FF] to-white shadow-sm flex flex-col items-center justify-center gap-3 hover:opacity-80 transition-opacity">
+                      <button
+                        onClick={openCreateStoryModal}
+                        className="w-[120px] h-[160px] rounded-lg border-2 border-dashed border-[#A3B3FF] bg-gradient-to-b from-[#EEF2FF] to-white shadow-sm flex flex-col items-center justify-center gap-3 hover:opacity-80 hover:cursor-pointer transition-opacity"
+                      >
                         <div className="w-10 h-10 rounded-full bg-[#615FFF] flex items-center justify-center">
                           <svg
                             width="20"
