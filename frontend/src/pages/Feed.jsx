@@ -1,176 +1,66 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { assets } from "../assets/assets";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import NotificationList from "../components/NotificationList.jsx";
 
 const Feed = () => {
-  const { openCreateStoryModal } = useContext(AuthContext);
+  const { openCreateStoryModal, posts, users, stories, setStories, mainUser } =
+    useContext(AuthContext);
 
-  const posts = [
-    {
-      id: 1,
-      author: "John Warren",
-      username: "@john_warren",
-      timeAgo: "9 days ago",
-      verified: true,
-      content:
-        "We're a small #team with a big vision — working day and night to turn dreams into products, and #products into something people love.",
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/dcb0ab7d24503e59eab05f7fdda1e3e6424ff5ca?width=1280",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 2,
-      author: "John Warren",
-      username: "@john_warren",
-      timeAgo: "16 days ago",
-      verified: true,
-      content:
-        "Unlock your potential—every small step counts. Stay consistent, stay focused, and trust the process. Growth takes time, but every day is a new chance to be better than yesterday. 🌱✨",
-      hashtags:
-        "#Motivation #GrowthMindset #DailyInspiration #StayFocused #LevelUp #PositiveVibes #KeepGoing #SelfImprovement #MindsetMatters #SuccessJourney",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 3,
-      author: "John Warren",
-      username: "@john_warren",
-      timeAgo: "16 days ago",
-      verified: true,
-      content:
-        "This is a sample paragraph with some #hashtags like #socialmedia and #marketing. Let's find them!",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 4,
-      author: "John Warren",
-      username: "@john_warren",
-      timeAgo: "16 days ago",
-      verified: true,
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/9e143b7832c9795ce71972704a2a1dbf5518e644?width=1280",
-      likes: 1,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 5,
-      author: "John Warren",
-      username: "@john_warren",
-      timeAgo: "16 days ago",
-      verified: true,
-      content: "Finally , got the car !",
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/a0d467208bad46350ea13d1a96d5b2164c2bacfa?width=1280",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 6,
-      author: "John Warren",
-      username: "@john_warren",
-      timeAgo: "16 days ago",
-      verified: true,
-      content: "Hello, Everyone this is my first Post",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-  ];
+  const [feeds, setFeeds] = useState([]);
+  const [displayStories, setDisplayStories] = useState([]);
+  const navigate = useNavigate();
 
-  const stories = [
-    {
-      id: 1,
-      type: "create",
-      label: "Create Story",
-    },
-    {
-      id: 2,
-      text: "📌 This isn't the…",
-      gradient: true,
-      timeAgo: "3 hours ago",
-    },
-    {
-      id: 3,
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/b42f2ebe3aaf94389fc64a144d0eea2fc340316e?width=240",
-      timeAgo: "3 hours ago",
-    },
-    {
-      id: 4,
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/0516e29cc3567ff8a224d730dddfc9c75494df97?width=240",
-      timeAgo: "3 hours ago",
-    },
-    {
-      id: 5,
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/3da5df1e5bf3c44c96638910596cd5178632327f?width=240",
-      timeAgo: "3 hours ago",
-    },
-    {
-      id: 6,
-      text: "🤫 Not every m…",
-      gradient: true,
-      timeAgo: "3 hours ago",
-    },
-    {
-      id: 7,
-      text: "✨ Something …",
-      gradient: true,
-      timeAgo: "3 hours ago",
-    },
-  ];
+  // convert posts and users into displaying feeds with usernames and images
+  useEffect(() => {
+    // sort posts newest-first
+    const sortedPosts = [...posts].sort((a, b) => {
+      const da = a.createdAt ? new Date(a.createdAt) : 0;
+      const db = b.createdAt ? new Date(b.createdAt) : 0;
+      return db - da;
+    });
 
-  const messages = [
-    {
-      id: 1,
-      name: "Richard Hendricks",
-      avatar:
-        "https://api.builder.io/api/v1/image/assets/TEMP/5bdbed167d20abe2ed4d892bfaa7612f87b013c2?width=64",
-      message: "I seen your profile",
-      timeAgo: "3 hours ago",
-      unread: 0,
-    },
-    {
-      id: 2,
-      name: "John Warren",
-      avatar:
-        "https://api.builder.io/api/v1/image/assets/TEMP/e4c261360f7cac9fea45d2bc5413a47ad370439e?width=64",
-      message: "This is a Samsung Tablet",
-      timeAgo: "8 days ago",
-      unread: 0,
-    },
-    {
-      id: 3,
-      name: "Alexa james",
-      avatar:
-        "https://api.builder.io/api/v1/image/assets/TEMP/0d24ec9fbec96a57bed1363222a436d541b0a0db?width=64",
-      message: "how are you",
-      timeAgo: "15 days ago",
-      unread: 1,
-    },
-  ];
+    const combinedPosts = sortedPosts.map((post) => {
+      // here posts contains both posts of users and mainUser
+      const author =
+        users.find((u) => u.clerkId === post.clerkId) || mainUser || {};
 
-  //   const parts = text.split(/(#\w+)/g);
-  //   return parts.map((part, i) =>
-  //     part.startsWith("#") ? (
-  //       <span key={i} className="text-brand-purple">
-  //         {part}
-  //       </span>
-  //     ) : (
-  //       <span key={i}>{part}</span>
-  //     )
-  //   );
-  // };
+      return {
+        ...post,
+        fullName:
+          (author.firstName ?? "") +
+          (author.lastName ? ` ${author.lastName}` : ""),
+        username: author.username ?? "unknown",
+        imageUrl: author.imageUrl ?? assets.sample_profile,
+      };
+    });
+    setFeeds(combinedPosts);
+  }, [posts, users, mainUser]);
 
-  //
+  // convert stories and users into displaying stories with usernames and images
+  useEffect(() => {
+    // sort stories newest-first
+    const sortedStories = [...stories].sort((a, b) => {
+      const da = a.createdAt ? new Date(a.createdAt) : 0;
+      const db = b.createdAt ? new Date(b.createdAt) : 0;
+      return db - da;
+    });
+
+    const combinedStories = sortedStories.map((story) => {
+      // here stories contains both stories of users and mainUser
+      const author =
+        users.find((u) => u.clerkId === story.clerkId) || mainUser || {};
+
+      return {
+        ...story,
+        imageUrl: author.imageUrl ?? assets.sample_profile,
+      };
+    });
+
+    setDisplayStories(combinedStories);
+  }, [stories, users, mainUser]);
 
   // render hashtags
   const renderHashtags = (text) => {
@@ -190,141 +80,149 @@ const Feed = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="max-w-[1536px] mx-auto px-4 py-5 lg:py-10">
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 lg:gap-8">
-          <div className="space-y-5">
-            <div className="overflow-x-auto pb-5 -mx-4 px-4">
-              <div className="flex gap-4 min-w-max">
-                {stories.map((story) => (
-                  <div key={story.id} className="shrink-0">
-                    {story.type === "create" ? (
-                      <button
-                        onClick={openCreateStoryModal}
-                        className="w-[120px] h-[160px] rounded-lg border-2 border-dashed border-[#A3B3FF] bg-gradient-to-b from-[#EEF2FF] to-white shadow-sm flex flex-col items-center justify-center gap-3 hover:opacity-80 hover:cursor-pointer transition-opacity"
+      <div className="flex-1 mx-auto px-4 py-5 lg:py-10">
+        <div className="w-full grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 lg:gap-8">
+          <div className="space-y-5 w-full min-w-0">
+            <div className="overflow-x-auto pb-5 max-w-full">
+              <div className="flex gap-4 whitespace-nowrap">
+                {/* ---- USER STORIES --- */}
+
+                <div className="flex-none">
+                  <button
+                    onClick={openCreateStoryModal}
+                    className="w-[120px] h-[160px] rounded-lg border-2 border-dashed border-[#A3B3FF] bg-gradient-to-b from-[#EEF2FF] to-white shadow-sm flex flex-col items-center justify-center gap-3 hover:opacity-80 hover:cursor-pointer transition-opacity"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#615FFF] flex items-center justify-center">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <div className="w-10 h-10 rounded-full bg-[#615FFF] flex items-center justify-center">
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M4.16699 10H15.8337"
-                              stroke="white"
-                              strokeWidth="1.66667"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M10 4.16797V15.8346"
-                              stroke="white"
-                              strokeWidth="1.66667"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </div>
-                        <span className="text-sm font-medium text-[#314158]">
-                          Create Story
-                        </span>
-                      </button>
-                    ) : (
-                      <div className="w-[120px] h-40 rounded-lg bg-gradient-to-b from-[#615FFF] to-[#9810FA] shadow-sm relative overflow-hidden">
-                        {story.image && (
-                          <img
-                            src={story.image}
-                            alt=""
-                            className="absolute inset-0 w-full h-full object-cover opacity-70"
-                          />
-                        )}
-                        <img
-                          src="https://api.builder.io/api/v1/image/assets/TEMP/0bbcee38288566de515b24908ec63b39e92a63f0?width=64"
-                          alt=""
-                          className="absolute top-3 left-3 w-8 h-8 rounded-full border border-gray-100 shadow-sm"
+                        <path
+                          d="M4.16699 10H15.8337"
+                          stroke="white"
+                          strokeWidth="1.66667"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
-                        {story.text && (
-                          <div className="absolute top-1/2 left-3 right-3 -translate-y-1/2">
-                            <p className="text-sm text-white/60 line-clamp-2">
-                              {story.text}
-                            </p>
-                          </div>
-                        )}
-                        <div className="absolute bottom-3 left-12 text-xs text-white">
-                          {story.timeAgo}
+                        <path
+                          d="M10 4.16797V15.8346"
+                          stroke="white"
+                          strokeWidth="1.66667"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium text-[#314158]">
+                      Create Story
+                    </span>
+                  </button>
+                </div>
+
+                {displayStories.map((story) => (
+                  <div
+                    key={story._id}
+                    className="shrink-0 cursor-pointer"
+                    onClick={() => {
+                      navigate(`/story/${story._id}`);
+                    }}
+                  >
+                    <div className="w-[120px] h-40 rounded-lg bg-gradient-to-b from-[#615FFF] to-[#9810FA] shadow-sm relative overflow-hidden">
+                      {story.mediaUrl && (
+                        <img
+                          src={story.mediaUrl}
+                          className="absolute inset-0 w-full h-full object-cover opacity-70"
+                        />
+                      )}
+                      <img
+                        src={story.imageUrl}
+                        alt=""
+                        className="absolute top-3 left-3 w-8 h-8 rounded-full border border-gray-100 shadow-sm"
+                      />
+                      {story.text && (
+                        <div className="absolute top-1/2 left-3 right-3 -translate-y-1/2">
+                          <p className="text-sm text-white/60 line-clamp-2">
+                            {story.text}
+                          </p>
                         </div>
+                      )}
+                      <div className="absolute bottom-3 left-12 text-xs text-white">
+                        {/* e.g. "November 26th, 2025" */}
+                        {format(new Date(), "MMMM do, yyyy")}
                       </div>
-                    )}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-4">
-              {posts.map((post) => (
+            {/* --- USERS POSTS/FEEDS---*/}
+
+            <div className="space-y-4 w-full ">
+              {feeds.map((feed) => (
                 <div
-                  key={post.id}
+                  key={feed.id}
                   className="bg-white rounded-xl shadow-sm overflow-hidden"
                 >
                   <div className="p-4">
-                    <div className="flex items-start gap-3 mb-4">
+                    <div
+                      className="flex items-start gap-3 mb-4 hover:cursor-pointer"
+                      onClick={() => navigate(`/profile/${feed.clerkId}`)}
+                    >
+                      {/* here we show user image from users array using its clerkId */}
                       <img
-                        src="https://api.builder.io/api/v1/image/assets/TEMP/5286ba02a18fe2d46c4490703e344f01be20b831?width=80"
-                        alt={post.author}
+                        src={feed.imageUrl}
+                        alt={feed.fullName}
                         className="w-10 h-10 rounded-full shadow-sm"
                       />
                       <div className="flex-1">
                         <div className="flex items-center gap-1">
                           <h3 className="font-semibold text-base text-black">
-                            {post.author}
+                            {feed.fullName}
                           </h3>
-                          {post.verified && (
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2.5668 5.74608C2.46949 5.30776 2.48443 4.85198 2.61023 4.42097C2.73604 3.98997 2.96863 3.59771 3.28644 3.28056C3.60425 2.96341 3.997 2.73164 4.42827 2.60674C4.85953 2.48184 5.31535 2.46786 5.75346 2.56608C5.9946 2.18895 6.3268 1.87859 6.71943 1.6636C7.11206 1.44862 7.55249 1.33594 8.00013 1.33594C8.44776 1.33594 8.8882 1.44862 9.28083 1.6636C9.67346 1.87859 10.0057 2.18895 10.2468 2.56608C10.6856 2.46743 11.1422 2.48135 11.5741 2.60656C12.0061 2.73176 12.3994 2.96417 12.7174 3.28218C13.0354 3.60019 13.2678 3.99346 13.393 4.42542C13.5182 4.85737 13.5321 5.31397 13.4335 5.75275C13.8106 5.99389 14.121 6.32608 14.3359 6.71871C14.5509 7.11135 14.6636 7.55178 14.6636 7.99941C14.6636 8.44705 14.5509 8.88748 14.3359 9.28011C14.121 9.67275 13.8106 10.0049 13.4335 10.2461C13.5317 10.6842 13.5177 11.14 13.3928 11.5713C13.2679 12.0025 13.0361 12.3953 12.719 12.7131C12.4018 13.0309 12.0096 13.2635 11.5786 13.3893C11.1476 13.5151 10.6918 13.5301 10.2535 13.4327C10.0126 13.8113 9.68018 14.123 9.28688 14.339C8.89358 14.5549 8.45215 14.6681 8.00346 14.6681C7.55478 14.6681 7.11335 14.5549 6.72004 14.339C6.32674 14.123 5.99429 13.8113 5.75346 13.4327C5.31535 13.531 4.85953 13.517 4.42827 13.3921C3.997 13.2672 3.60425 13.0354 3.28644 12.7183C2.96863 12.4011 2.73604 12.0089 2.61023 11.5779C2.48443 11.1469 2.46949 10.6911 2.5668 10.2527C2.18677 10.0122 1.87374 9.67953 1.65683 9.28556C1.43992 8.89158 1.32617 8.44915 1.32617 7.99941C1.32617 7.54968 1.43992 7.10724 1.65683 6.71327C1.87374 6.3193 2.18677 5.98659 2.5668 5.74608Z"
-                                stroke="#2B7FFF"
-                                strokeWidth="1.33333"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M6 8.0013L7.33333 9.33464L10 6.66797"
-                                stroke="#2B7FFF"
-                                strokeWidth="1.33333"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          )}
+
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2.5668 5.74608C2.46949 5.30776 2.48443 4.85198 2.61023 4.42097C2.73604 3.98997 2.96863 3.59771 3.28644 3.28056C3.60425 2.96341 3.997 2.73164 4.42827 2.60674C4.85953 2.48184 5.31535 2.46786 5.75346 2.56608C5.9946 2.18895 6.3268 1.87859 6.71943 1.6636C7.11206 1.44862 7.55249 1.33594 8.00013 1.33594C8.44776 1.33594 8.8882 1.44862 9.28083 1.6636C9.67346 1.87859 10.0057 2.18895 10.2468 2.56608C10.6856 2.46743 11.1422 2.48135 11.5741 2.60656C12.0061 2.73176 12.3994 2.96417 12.7174 3.28218C13.0354 3.60019 13.2678 3.99346 13.393 4.42542C13.5182 4.85737 13.5321 5.31397 13.4335 5.75275C13.8106 5.99389 14.121 6.32608 14.3359 6.71871C14.5509 7.11135 14.6636 7.55178 14.6636 7.99941C14.6636 8.44705 14.5509 8.88748 14.3359 9.28011C14.121 9.67275 13.8106 10.0049 13.4335 10.2461C13.5317 10.6842 13.5177 11.14 13.3928 11.5713C13.2679 12.0025 13.0361 12.3953 12.719 12.7131C12.4018 13.0309 12.0096 13.2635 11.5786 13.3893C11.1476 13.5151 10.6918 13.5301 10.2535 13.4327C10.0126 13.8113 9.68018 14.123 9.28688 14.339C8.89358 14.5549 8.45215 14.6681 8.00346 14.6681C7.55478 14.6681 7.11335 14.5549 6.72004 14.339C6.32674 14.123 5.99429 13.8113 5.75346 13.4327C5.31535 13.531 4.85953 13.517 4.42827 13.3921C3.997 13.2672 3.60425 13.0354 3.28644 12.7183C2.96863 12.4011 2.73604 12.0089 2.61023 11.5779C2.48443 11.1469 2.46949 10.6911 2.5668 10.2527C2.18677 10.0122 1.87374 9.67953 1.65683 9.28556C1.43992 8.89158 1.32617 8.44915 1.32617 7.99941C1.32617 7.54968 1.43992 7.10724 1.65683 6.71327C1.87374 6.3193 2.18677 5.98659 2.5668 5.74608Z"
+                              stroke="#2B7FFF"
+                              strokeWidth="1.33333"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M6 8.0013L7.33333 9.33464L10 6.66797"
+                              stroke="#2B7FFF"
+                              strokeWidth="1.33333"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
                         </div>
                         <p className="text-sm text-[#6A7282]">
-                          {post.username} • {post.timeAgo}
+                          {feed.username} •{" "}
+                          {format(new Date(), "MMMM do, yyyy")}
                         </p>
                       </div>
                     </div>
 
-                    {post.content && (
+                    {feed.text && (
                       <p className="text-sm leading-5 mb-4 text-[#1E2939]">
-                        {renderHashtags(post.content)}
+                        {renderHashtags(feed.text)}
                       </p>
                     )}
 
-                    {post.hashtags && (
-                      <p className="text-sm leading-5 mb-4">
-                        {renderHashtags(post.hashtags)}
-                      </p>
-                    )}
-
-                    {post.image && (
+                    {feed.mediaUrl && (
                       <img
-                        src={post.image}
+                        src={feed.mediaUrl}
                         alt=""
                         className="w-full rounded-lg mb-4"
                       />
@@ -347,7 +245,7 @@ const Feed = () => {
                             strokeLinejoin="round"
                           />
                         </svg>
-                        <span>{post.likes}</span>
+                        <span>{feed.likeCount}</span>
                       </button>
                       <button className="flex items-center gap-1.5 hover:text-brand-purple transition-colors">
                         <svg
@@ -365,7 +263,7 @@ const Feed = () => {
                             strokeLinejoin="round"
                           />
                         </svg>
-                        <span>{post.comments}</span>
+                        <span>{feed.commentCount}</span>
                       </button>
                       <button className="flex items-center gap-1.5 hover:text-brand-purple transition-colors">
                         <svg
@@ -411,7 +309,7 @@ const Feed = () => {
                             strokeLinejoin="round"
                           />
                         </svg>
-                        <span>{post.shares}</span>
+                        <span>{feed.shareCount}</span>
                       </button>
                     </div>
                   </div>
@@ -436,46 +334,8 @@ const Feed = () => {
                 built for results.
               </p>
             </div>
-
-            <div className="bg-white rounded-md shadow-sm p-4">
-              <h3 className="text-xs font-semibold text-[#1D293D] mb-4">
-                Recent Messages
-              </h3>
-              <div className="space-y-3">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className="flex items-start gap-2.5 py-1 hover:bg-gray-50 -mx-2 px-2 rounded cursor-pointer transition-colors"
-                  >
-                    <img
-                      src={message.avatar}
-                      alt={message.name}
-                      className="w-8 h-8 rounded-full flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-0.5">
-                        <p className="text-xs font-medium text-[#1D293D] truncate">
-                          {message.name}
-                        </p>
-                        <span className="text-[10px] text-[#90A1B9] flex-shrink-0">
-                          {message.timeAgo}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="text-xs text-[#6A7282] truncate">
-                          {message.message}
-                        </p>
-                        {message.unread > 0 && (
-                          <span className="flex-shrink-0 w-4 h-4 rounded-full bg-[#615FFF] text-white text-[10px] flex items-center justify-center">
-                            {message.unread}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* //-- RECENT MESSAGES ---// */}
+            <NotificationList />
           </div>
         </div>
       </div>

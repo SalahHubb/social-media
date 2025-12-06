@@ -56,6 +56,9 @@
 
 @layer base {
   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: "Outfit", "Inter", -apple-system, Roboto, Helvetica, sans-serif;
   }
 
@@ -68,5 +71,11 @@
   code {
     overflow-x: auto;
     white-space: pre;
+  }
+}
+
+@layer utilities {
+  .no-scroll-bar::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -1,73 +1,77 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { useParams } from "react-router-dom";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("posts");
-  const { openEditProfile } = useContext(AuthContext);
+  const { openEditProfile, mainUser, users, posts } = useContext(AuthContext);
+  const { id } = useParams();
 
-  const posts = [
-    {
-      id: 1,
-      text: "We're a small #team with a big vision — working day and night to turn dreams into products, and #products into something people love.",
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/dcb0ab7d24503e59eab05f7fdda1e3e6424ff5ca?width=1280",
-      timestamp: "9 days ago",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 2,
-      text: "Unlock your potential—every small step counts. Stay consistent, stay focused, and trust the process. Growth takes time, but every day is a new chance to be better than yesterday. 🌱✨",
-      hashtags:
-        "#Motivation #GrowthMindset #DailyInspiration #StayFocused #LevelUp #PositiveVibes #KeepGoing #SelfImprovement #MindsetMatters #SuccessJourney",
-      timestamp: "16 days ago",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 3,
-      text: "This is a sample paragraph with some #hashtags like #socialmedia and #marketing. Let's find them!",
-      timestamp: "16 days ago",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 4,
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/9e143b7832c9795ce71972704a2a1dbf5518e644?width=1280",
-      timestamp: "16 days ago",
-      likes: 1,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 5,
-      text: "Finally , got the car !",
-      image:
-        "https://api.builder.io/api/v1/image/assets/TEMP/a0d467208bad46350ea13d1a96d5b2164c2bacfa?width=1280",
-      timestamp: "16 days ago",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-    {
-      id: 6,
-      text: "Hello, Everyone this is my first Post",
-      timestamp: "16 days ago",
-      likes: 0,
-      comments: 12,
-      shares: 7,
-    },
-  ];
+  const user = users.find((u) => u.clerkId === id) || mainUser;
+  const userPosts = posts.filter((p) => p.clerkId === user.clerkId);
 
-  const renderPostText = (text, hashtags) => {
-    if (!text && !hashtags) return null;
+  // const posts = [
+  //   {
+  //     id: 1,
+  //     text: "We're a small #team with a big vision — working day and night to turn dreams into products, and #products into something people love.",
+  //     image:
+  //       "https://api.builder.io/api/v1/image/assets/TEMP/dcb0ab7d24503e59eab05f7fdda1e3e6424ff5ca?width=1280",
+  //     timestamp: "9 days ago",
+  //     likes: 0,
+  //     comments: 12,
+  //     shares: 7,
+  //   },
+  //   {
+  //     id: 2,
+  //     text: "Unlock your potential—every small step counts. Stay consistent, stay focused, and trust the process. Growth takes time, but every day is a new chance to be better than yesterday. 🌱✨",
+  //     hashtags:
+  //       "#Motivation #GrowthMindset #DailyInspiration #StayFocused #LevelUp #PositiveVibes #KeepGoing #SelfImprovement #MindsetMatters #SuccessJourney",
+  //     timestamp: "16 days ago",
+  //     likes: 0,
+  //     comments: 12,
+  //     shares: 7,
+  //   },
+  //   {
+  //     id: 3,
+  //     text: "This is a sample paragraph with some #hashtags like #socialmedia and #marketing. Let's find them!",
+  //     timestamp: "16 days ago",
+  //     likes: 0,
+  //     comments: 12,
+  //     shares: 7,
+  //   },
+  //   {
+  //     id: 4,
+  //     image:
+  //       "https://api.builder.io/api/v1/image/assets/TEMP/9e143b7832c9795ce71972704a2a1dbf5518e644?width=1280",
+  //     timestamp: "16 days ago",
+  //     likes: 1,
+  //     comments: 12,
+  //     shares: 7,
+  //   },
+  //   {
+  //     id: 5,
+  //     text: "Finally , got the car !",
+  //     image:
+  //       "https://api.builder.io/api/v1/image/assets/TEMP/a0d467208bad46350ea13d1a96d5b2164c2bacfa?width=1280",
+  //     timestamp: "16 days ago",
+  //     likes: 0,
+  //     comments: 12,
+  //     shares: 7,
+  //   },
+  //   {
+  //     id: 6,
+  //     text: "Hello, Everyone this is my first Post",
+  //     timestamp: "16 days ago",
+  //     likes: 0,
+  //     comments: 12,
+  //     shares: 7,
+  //   },
+  // ];
 
-    const fullText = [text, hashtags].filter(Boolean).join("\n\n");
-    const parts = fullText.split(/(#\w+)/g);
+  const renderPostText = (text) => {
+    if (!text) return null;
+
+    const parts = text.split(/(#\w+)/g);
 
     return (
       <p className="text-sm text-[#1E2939] leading-5 mb-4 font-['Outfit'] whitespace-pre-line">
@@ -103,8 +107,7 @@ export default function Profile() {
               <div className="relative">
                 <div className="w-32 h-32 rounded-full border-4 border-white shadow-lg overflow-hidden bg-white">
                   <img
-                    src="https://api.builder.io/api/v1/image/assets/TEMP/1de2379a40be4f000180511867fc8fead9872c75?width=240"
-                    alt="Profile"
+                    src={user?.imageUrl || ""}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -115,7 +118,7 @@ export default function Profile() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <h1 className="text-2xl font-bold text-[#101828] font-['Outfit']">
-                    John Warren
+                    {user?.firstName} {user?.lastName}
                   </h1>
                   <svg
                     width="24"
@@ -140,21 +143,22 @@ export default function Profile() {
                     />
                   </svg>
                 </div>
-                <button
-                  onClick={openEditProfile}
-                  className="px-4 py-2.5 rounded-lg border border-[#D1D5DC] text-black text-base font-medium font-['Outfit'] hover:bg-slate-50 transition-colors"
-                >
-                  Edit
-                </button>
+                {user?._id === mainUser?._id && (
+                  <button
+                    onClick={openEditProfile}
+                    className="px-4 py-2.5 rounded-lg border border-[#D1D5DC] text-black text-base font-medium font-['Outfit'] hover:bg-slate-50 transition-colors"
+                  >
+                    Edit
+                  </button>
+                )}
               </div>
 
               <p className="text-base text-[#6A7282] mb-4 font-['Outfit']">
-                @john_warren
+                {user?.username}
               </p>
 
               <p className="text-sm text-[#364153] leading-5 mb-4 font-['Outfit']">
-                🌍 Dreamer | 📚 Learner | 🚀 Doer Exploring life one step at a
-                time. ✨ Staying curious. Creating with purpose.
+                {user?.bio || "This user has not added a bio yet."}
               </p>
 
               <div className="flex items-center gap-4 mb-6 text-sm text-[#6A7282] font-['Outfit']">
@@ -181,7 +185,7 @@ export default function Profile() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span>New York, NY</span>
+                  <span>{user?.location || "New York, NY"}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <svg
@@ -228,7 +232,7 @@ export default function Profile() {
               <div className="flex items-center gap-6 pt-6 border-t border-[#E5E7EB]">
                 <div>
                   <span className="text-xl font-bold text-[#101828] font-['Outfit']">
-                    6
+                    {userPosts.length ? userPosts.length : 0}
                   </span>
                   <span className="text-sm text-[#6A7282] ml-2 font-['Outfit']">
                     Posts
@@ -236,7 +240,7 @@ export default function Profile() {
                 </div>
                 <div>
                   <span className="text-xl font-bold text-[#101828] font-['Outfit']">
-                    2
+                    {user?.followers.length || 0}
                   </span>
                   <span className="text-sm text-[#6A7282] ml-2 font-['Outfit']">
                     Followers
@@ -244,7 +248,7 @@ export default function Profile() {
                 </div>
                 <div>
                   <span className="text-xl font-bold text-[#101828] font-['Outfit']">
-                    2
+                    {user?.following.length || 0}
                   </span>
                   <span className="text-sm text-[#6A7282] ml-2 font-['Outfit']">
                     Following
@@ -289,21 +293,21 @@ export default function Profile() {
         </div>
 
         <div className="space-y-6">
-          {posts.map((post) => (
+          {userPosts?.map((post) => (
             <div
               key={post.id}
               className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
             >
               <div className="flex items-start gap-3 mb-4">
                 <img
-                  src="https://api.builder.io/api/v1/image/assets/TEMP/5286ba02a18fe2d46c4490703e344f01be20b831?width=80"
+                  src={user?.imageUrl}
                   alt="Profile"
                   className="w-10 h-10 rounded-full shadow-sm"
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="text-base font-semibold text-black font-['Outfit']">
-                      John Warren
+                      {user?.firstName} {user?.lastName}
                     </h3>
                     <svg
                       width="16"
@@ -329,16 +333,16 @@ export default function Profile() {
                     </svg>
                   </div>
                   <p className="text-sm text-[#6A7282] font-['Outfit']">
-                    @john_warren • {post.timestamp}
+                    {`${user?.username}`} • {post.createdAt}
                   </p>
                 </div>
               </div>
 
-              {renderPostText(post.text, post.hashtags)}
+              {renderPostText(post.text)}
 
-              {post.image && (
+              {post.mediaUrl && (
                 <img
-                  src={post.image}
+                  src={post.mediaUrl}
                   alt="Post content"
                   className="w-full rounded-lg mb-4"
                 />
@@ -361,7 +365,9 @@ export default function Profile() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-sm font-['Outfit']">{post.likes}</span>
+                  <span className="text-sm font-['Outfit']">
+                    {post.likeCount}
+                  </span>
                 </button>
 
                 <button className="flex items-center gap-2 text-[#4A5565] hover:text-[#4F39F6] transition-colors">
@@ -381,7 +387,7 @@ export default function Profile() {
                     />
                   </svg>
                   <span className="text-sm font-['Outfit']">
-                    {post.comments}
+                    {post.commentCount}
                   </span>
                 </button>
 
@@ -429,7 +435,9 @@ export default function Profile() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="text-sm font-['Outfit']">{post.shares}</span>
+                  <span className="text-sm font-['Outfit']">
+                    {post.shareCount}
+                  </span>
                 </button>
               </div>
             </div>

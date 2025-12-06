@@ -7,7 +7,7 @@ import EditProfile from "../components/EditProfile.jsx";
 
 const Home = () => {
   const {
-    isCreateStroyModalOpen,
+    isCreateStoryModalOpen,
     closeCreateStoryModal,
     isEditProfileOpen,
     closeEditProfile,
@@ -18,7 +18,7 @@ const Home = () => {
       <Navbar />
       <Main />
       <CreateStoryModal
-        open={isCreateStroyModalOpen}
+        open={isCreateStoryModalOpen}
         onClose={closeCreateStoryModal}
       />
       <EditProfile open={isEditProfileOpen} onClose={closeEditProfile} />

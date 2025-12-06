@@ -99,7 +99,9 @@ const Login = () => {
 
             <div className="flex justify-center lg:justify-end">
               <div className="w-full max-w-[400px] rounded-xl overflow-hidden">
-                <SignIn />
+                <SignIn /> {/* by default navigate / */}
+                {/* custom option using navigate function of react router dom
+                <SignIn onSuccess={() => navigate('/home')}/>  */}
               </div>
             </div>
           </div>

@@ -1,50 +1,61 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext.jsx";
+import { sendConnectionRequest } from "../../../backend/controllers/connectionController.js";
 
 export default function Discover() {
-  const [followingStatus, setFollowingStatus] = useState({
-    2: true,
-    3: true,
-  });
+  const { users, mainUser, sendConnectionRequest, followUser, unfollowUser } =
+    useContext(AuthContext);
+  const [people, setPeople] = useState([]);
+  const [query, setQuery] = useState(null);
 
-  const people = [
-    {
-      id: 1,
-      name: "John Warren",
-      username: "@john_warren",
-      avatar:
-        "https://api.builder.io/api/v1/image/assets/TEMP/1a4972fcedc4cc4f599ff4e7346c6a215690761b?width=128",
-      bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
-      location: "New York, NY",
-      followers: 2,
-    },
-    {
-      id: 2,
-      name: "Richard Hendricks",
-      username: "@Richard Hendricks",
-      avatar:
-        "https://api.builder.io/api/v1/image/assets/TEMP/5171bbb468296cfc484e95c8281d8234bc81eb40?width=128",
-      bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
-      location: "New York, NY",
-      followers: 2,
-    },
-    {
-      id: 3,
-      name: "Alexa james",
-      username: "@alexa_james",
-      avatar:
-        "https://api.builder.io/api/v1/image/assets/TEMP/1295004766ea06d209d9f0428bf597cea54e87a6?width=128",
-      bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
-      location: "New York, NY",
-      followers: 2,
-    },
-  ];
+  //   {
+  //     id: 1,
+  //     name: "John Warren",
+  //     username: "@john_warren",
+  //     avatar:
+  //       "https://api.builder.io/api/v1/image/assets/TEMP/1a4972fcedc4cc4f599ff4e7346c6a215690761b?width=128",
+  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
+  //     location: "New York, NY",
+  //     followers: 2,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Richard Hendricks",
+  //     username: "@Richard Hendricks",
+  //     avatar:
+  //       "https://api.builder.io/api/v1/image/assets/TEMP/5171bbb468296cfc484e95c8281d8234bc81eb40?width=128",
+  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
+  //     location: "New York, NY",
+  //     followers: 2,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Alexa james",
+  //     username: "@alexa_james",
+  //     avatar:
+  //       "https://api.builder.io/api/v1/image/assets/TEMP/1295004766ea06d209d9f0428bf597cea54e87a6?width=128",
+  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
+  //     location: "New York, NY",
+  //     followers: 2,
+  //   },
+  // ];
 
-  const toggleFollow = (id) => {
-    setFollowingStatus((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  // filter people based on query
+  useEffect(() => {
+    if (!query) return;
+
+    const filetedPeople = users.filter((user) => {
+      const lowerQuery = query.toLowerCase();
+      return (
+        user.firstName.toLowerCase().includes(lowerQuery) ||
+        (user.username && user.username.toLowerCase().includes(lowerQuery)) ||
+        (user.bio && user.bio.toLowerCase().includes(lowerQuery)) ||
+        (user.location && user.location.toLowerCase().includes(lowerQuery))
+      );
+    });
+    setPeople(filetedPeople);
+  }, [query, users]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F8FAFC] to-white py-6 px-4 sm:px-6 lg:px-12">
@@ -87,6 +98,8 @@ export default function Discover() {
               </div>
               <input
                 type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search people by name, username, bio, or location..."
                 className="w-full pl-12 pr-4 py-3 rounded-md border border-[#D1D5DC] text-base font-['Outfit'] placeholder:text-black/50 focus:outline-none focus:ring-2 focus:ring-[#615FFF] focus:border-transparent"
               />
@@ -101,14 +114,14 @@ export default function Discover() {
               className="bg-white rounded-md border border-[#E5E7EB] shadow-sm p-6 flex flex-col items-center"
             >
               <img
-                src={person.avatar}
-                alt={person.name}
+                src={person.imageUrl}
+                alt={person.firstName}
                 className="w-16 h-16 rounded-full shadow-md mb-6"
               />
 
               <div className="text-center mb-4">
                 <h3 className="text-base font-semibold text-black leading-6 font-['Outfit']">
-                  {person.name}
+                  {person.firstName} {person.lastName}
                 </h3>
                 <p className="text-base font-light text-[#6A7282] leading-6 font-['Outfit']">
                   {person.username}
@@ -150,7 +163,7 @@ export default function Discover() {
 
                 <div className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#D1D5DC]">
                   <span className="text-xs text-[#4A5565] font-['Outfit']">
-                    {person.followers}
+                    {person.followers.length}
                   </span>
                   <span className="text-xs text-[#4A5565] font-['Outfit']">
                     Followers
@@ -160,7 +173,11 @@ export default function Discover() {
 
               <div className="flex items-center gap-3 w-full">
                 <button
-                  onClick={() => toggleFollow(person.id)}
+                  onClick={() => {
+                    mainUser.following.includes(person.clerkId)
+                      ? null
+                      : followUser(mainUser.clerkId, person.clerkId);
+                  }}
                   className="flex-1 flex items-center justify-center gap-2 px-6 py-2.5 rounded-md bg-gradient-to-r from-[#615FFF] to-[#9810FA] text-white text-base font-['Outfit'] hover:opacity-90 transition-opacity"
                 >
                   <svg
@@ -200,13 +217,18 @@ export default function Discover() {
                     />
                   </svg>
                   <span>
-                    {followingStatus[person.id] ? "Following" : "Follow"}
+                    {mainUser.following.includes(person.clerkId)
+                      ? "Following"
+                      : "Follow"}
                   </span>
                 </button>
 
                 <button
                   className="w-12 h-10 flex items-center justify-center rounded-md border border-[#62748E] hover:bg-slate-50 transition-colors"
-                  aria-label="Message"
+                  aria-label="Connection request"
+                  onClick={() => {
+                    sendConnectionRequest(mainUser.clerkId, person.clerkId);
+                  }}
                 >
                   <svg
                     width="20"

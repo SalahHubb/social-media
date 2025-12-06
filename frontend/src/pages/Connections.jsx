@@ -3,8 +3,12 @@ import { Users } from "lucide-react";
 import { UserCheck } from "lucide-react";
 import { UserPlus } from "lucide-react";
 import { UserPen } from "lucide-react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function Connections() {
+  const { mainUser, pendingRequests, connections } = useContext(AuthContext);
+
   return (
     <div className="min-h-screen bg-slate-50 py-6 px-4 sm:px-6 lg:px-12">
       <div className="max-w-4xl mx-auto">
@@ -19,19 +23,19 @@ export default function Connections() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white px-4 py-2 shadow-sm rounded-md flex flex-col justify-center items-center lg:px-4 lg:py-2">
-            <p>2</p>
+            <p>{mainUser?.followers?.length || 0}</p>
             <p>Followers</p>
           </div>
           <div className="bg-white p-2 shadow-sm rounded-md flex flex-col justify-center items-center lg:px-4 lg:py-2">
-            <p>2</p>
+            <p>{mainUser?.following?.length || 0}</p>
             <p>Following</p>
           </div>
           <div className="bg-white p-2 shadow-sm rounded-md flex flex-col justify-center items-center lg:px-4 lg:py-2">
-            <p>2</p>
+            <p>{pendingRequests?.length || 0}</p>
             <p>Pending</p>
           </div>
           <div className="bg-white p-2 shadow-sm rounded-md flex flex-col justify-center items-center lg:px-4 lg:py-2">
-            <p>2</p>
+            <p>{connections?.length || 0}</p>
             <p>Connections</p>
           </div>
         </div>
