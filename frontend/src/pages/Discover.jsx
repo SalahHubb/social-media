@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext.jsx";
-import { sendConnectionRequest } from "../../../backend/controllers/connectionController.js";
 
 export default function Discover() {
   const { users, mainUser, sendConnectionRequest, followUser, unfollowUser } =
