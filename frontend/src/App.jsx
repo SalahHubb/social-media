@@ -14,7 +14,7 @@ import Followers from "./components/Followers.jsx";
 import Following from "./components/Following.jsx";
 import Pending from "./components/Pending.jsx";
 import UserConnections from "./components/UserConnections.jsx";
-import PrivateRoute from "./auth/privateRoute.jsx";
+import PrivateRoute from "./auth/PrivateRoute.jsx";
 import { Toaster } from "react-hot-toast";
 import UserProfileManagement from "./components/UserProfileManagement.jsx";
 import StoryViewer from "./components/StoryViewer.jsx";
