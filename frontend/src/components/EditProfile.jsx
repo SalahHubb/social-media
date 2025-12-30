@@ -5,8 +5,6 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { useContext } from "react";
 
-//         DON'T BE SAD. ALLAH IS WITH US!
-
 const EditProfile = ({ open, onClose }) => {
   const { user } = useUser();
   const { getToken } = useAuth();

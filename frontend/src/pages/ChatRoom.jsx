@@ -6,50 +6,6 @@ import { useState, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useParams } from "react-router-dom";
 
-// const messages = [
-//   {
-//     sender: "John Warren",
-//     content: "Hey! How are you?",
-//     timestamp: "10:00 AM",
-//   },
-//   {
-//     receiver: "alex",
-//     content: "Hey! I'm good, thanks!",
-//     timestamp: "10:01 AM",
-//   },
-//   { sender: "John Warren", content: "What about you?", timestamp: "10:02 AM" },
-//   {
-//     receiver: "alex",
-//     content: "Doing well! Just working on a project.",
-//     timestamp: "10:03 AM",
-//   },
-//   {
-//     sender: "John Warren",
-//     content: "That's great to hear.",
-//     timestamp: "10:04 AM",
-//   },
-//   {
-//     sender: "John Warren",
-//     content: "Hey! How are you?",
-//     timestamp: "10:00 AM",
-//   },
-//   {
-//     receiver: "alex",
-//     content: "Hey! I'm good, thanks!",
-//     timestamp: "10:01 AM",
-//   },
-//   {
-//     sender: "John Warren",
-//     content: "Hey! How are you?",
-//     timestamp: "10:00 AM",
-//   },
-//   {
-//     receiver: "alex",
-//     content: "Hey! I'm good, thanks!",
-//     timestamp: "10:01 AM",
-//   },
-// ];
-
 const ChatRoom = () => {
   const { messages, input, setInput, scrollRef, sendMessage, selectedUser } =
     useContext(AuthContext);

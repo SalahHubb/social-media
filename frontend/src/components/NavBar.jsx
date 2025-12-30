@@ -14,7 +14,6 @@ import UserProfileLink from "./UserProfileLink.jsx";
 
 const NavBar = () => {
   const { isMobileMenuOpen } = React.useContext(AuthContext);
-  const { user } = useUser();
 
   const navItems = [
     { title: "Feed", href: "/feed", icon: <House /> },

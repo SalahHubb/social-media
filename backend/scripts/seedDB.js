@@ -77,7 +77,8 @@ const seedDatabase = async () => {
 seedDatabase();
 // To run the seeding script use: node backend/scripts/seedDB.js
 
-// 2. Generate an array of dummy users
+// usage of faker.js
+// Generate an array of dummy users
 // const usersToCreate = 10; // Number of dummy users
 // const dummyUsers = [];
 
@@ -101,84 +102,6 @@ seedDatabase();
 
 /*
 
- const posts = [
-      {
-        id: 1,
-        author: "John Warren",
-        username: "@john_warren",
-        timeAgo: "9 days ago",
-        verified: true,
-        content:
-          "We're a small #team with a big vision — working day and night to turn dreams into products, and #products into something people love.",
-        image:
-          "https://api.builder.io/api/v1/image/assets/TEMP/dcb0ab7d24503e59eab05f7fdda1e3e6424ff5ca?width=1280",
-        likes: 0,
-        comments: 12,
-        shares: 7,
-      },
-      {
-        id: 2,
-        author: "John Warren",
-        username: "@john_warren",
-        timeAgo: "16 days ago",
-        verified: true,
-        content:
-          "Unlock your potential—every small step counts. Stay consistent, stay focused, and trust the process. Growth takes time, but every day is a new chance to be better than yesterday. 🌱✨",
-        hashtags:
-          "#Motivation #GrowthMindset #DailyInspiration #StayFocused #LevelUp #PositiveVibes #KeepGoing #SelfImprovement #MindsetMatters #SuccessJourney",
-        likes: 0,
-        comments: 12,
-        shares: 7,
-      },
-      {
-        id: 3,
-        author: "John Warren",
-        username: "@john_warren",
-        timeAgo: "16 days ago",
-        verified: true,
-        content:
-          "This is a sample paragraph with some #hashtags like #socialmedia and #marketing. Let's find them!",
-        likes: 0,
-        comments: 12,
-        shares: 7,
-      },
-      {
-        id: 4,
-        author: "John Warren",
-        username: "@john_warren",
-        timeAgo: "16 days ago",
-        verified: true,
-        image:
-          "https://api.builder.io/api/v1/image/assets/TEMP/9e143b7832c9795ce71972704a2a1dbf5518e644?width=1280",
-        likes: 1,
-        comments: 12,
-        shares: 7,
-      },
-      {
-        id: 5,
-        author: "John Warren",
-        username: "@john_warren",
-        timeAgo: "16 days ago",
-        verified: true,
-        content: "Finally , got the car !",
-        image:
-          "https://api.builder.io/api/v1/image/assets/TEMP/a0d467208bad46350ea13d1a96d5b2164c2bacfa?width=1280",
-        likes: 0,
-        comments: 12,
-        shares: 7,
-      },
-      {
-        id: 6,
-        author: "John Warren",
-        username: "@john_warren",
-        timeAgo: "16 days ago",
-        verified: true,
-        content: "Hello, Everyone this is my first Post",
-        likes: 0,
-        comments: 12,
-        shares: 7,
-      },
-    ];
 
     // let's push the above posts into the database based on the postSchema and delete the above posts array after inserting into the database
 
