@@ -41,7 +41,6 @@ app.use("/api/story", storyRouter);
 app.use("/api/post", postRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/connection", connectionRouter);
-app.use("/api/connection", connectionRouter);
 
 // --- SOCKET.IO REAL-TIME LOGIC ---
 const onlineUsers = new Map(); // clerkId -> socketId
@@ -56,10 +55,6 @@ io.on("connection", (socket) => {
   // 2. private message
   socket.on("privateMessage", async ({ senderId, recipientId, content }) => {
     try {
-      console.log("senderId: ", senderId);
-      console.log("senderId: ", recipientId);
-      console.log("content: ", content);
-
       // save to db
       const newMessage = await Message.create({
         senderId,
