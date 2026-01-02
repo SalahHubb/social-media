@@ -10,64 +10,6 @@ export default function Profile() {
   const user = users.find((u) => u.clerkId === id) || mainUser;
   const userPosts = posts.filter((p) => p.clerkId === user.clerkId);
 
-  // const posts = [
-  //   {
-  //     id: 1,
-  //     text: "We're a small #team with a big vision — working day and night to turn dreams into products, and #products into something people love.",
-  //     image:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/dcb0ab7d24503e59eab05f7fdda1e3e6424ff5ca?width=1280",
-  //     timestamp: "9 days ago",
-  //     likes: 0,
-  //     comments: 12,
-  //     shares: 7,
-  //   },
-  //   {
-  //     id: 2,
-  //     text: "Unlock your potential—every small step counts. Stay consistent, stay focused, and trust the process. Growth takes time, but every day is a new chance to be better than yesterday. 🌱✨",
-  //     hashtags:
-  //       "#Motivation #GrowthMindset #DailyInspiration #StayFocused #LevelUp #PositiveVibes #KeepGoing #SelfImprovement #MindsetMatters #SuccessJourney",
-  //     timestamp: "16 days ago",
-  //     likes: 0,
-  //     comments: 12,
-  //     shares: 7,
-  //   },
-  //   {
-  //     id: 3,
-  //     text: "This is a sample paragraph with some #hashtags like #socialmedia and #marketing. Let's find them!",
-  //     timestamp: "16 days ago",
-  //     likes: 0,
-  //     comments: 12,
-  //     shares: 7,
-  //   },
-  //   {
-  //     id: 4,
-  //     image:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/9e143b7832c9795ce71972704a2a1dbf5518e644?width=1280",
-  //     timestamp: "16 days ago",
-  //     likes: 1,
-  //     comments: 12,
-  //     shares: 7,
-  //   },
-  //   {
-  //     id: 5,
-  //     text: "Finally , got the car !",
-  //     image:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/a0d467208bad46350ea13d1a96d5b2164c2bacfa?width=1280",
-  //     timestamp: "16 days ago",
-  //     likes: 0,
-  //     comments: 12,
-  //     shares: 7,
-  //   },
-  //   {
-  //     id: 6,
-  //     text: "Hello, Everyone this is my first Post",
-  //     timestamp: "16 days ago",
-  //     likes: 0,
-  //     comments: 12,
-  //     shares: 7,
-  //   },
-  // ];
-
   const renderPostText = (text) => {
     if (!text) return null;
 
