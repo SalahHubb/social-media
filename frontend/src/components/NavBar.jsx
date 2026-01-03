@@ -13,7 +13,7 @@ import { assets } from "../assets/assets.js";
 import UserProfileLink from "./UserProfileLink.jsx";
 
 const NavBar = () => {
-  const { isMobileMenuOpen } = React.useContext(AuthContext);
+  const { isMobileMenuOpen, user } = React.useContext(AuthContext);
 
   const navItems = [
     { title: "Feed", href: "/feed", icon: <House /> },
