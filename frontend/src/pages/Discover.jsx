@@ -8,38 +8,6 @@ export default function Discover() {
   const [people, setPeople] = useState([]);
   const [query, setQuery] = useState(null);
 
-  //   {
-  //     id: 1,
-  //     name: "John Warren",
-  //     username: "@john_warren",
-  //     avatar:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/1a4972fcedc4cc4f599ff4e7346c6a215690761b?width=128",
-  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
-  //     location: "New York, NY",
-  //     followers: 2,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Richard Hendricks",
-  //     username: "@Richard Hendricks",
-  //     avatar:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/5171bbb468296cfc484e95c8281d8234bc81eb40?width=128",
-  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
-  //     location: "New York, NY",
-  //     followers: 2,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Alexa james",
-  //     username: "@alexa_james",
-  //     avatar:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/1295004766ea06d209d9f0428bf597cea54e87a6?width=128",
-  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer\nExploring life one step at a time. ✨\nStaying curious. Creating with\npurpose.",
-  //     location: "New York, NY",
-  //     followers: 2,
-  //   },
-  // ];
-
   // filter people based on query
   useEffect(() => {
     if (!query) return;

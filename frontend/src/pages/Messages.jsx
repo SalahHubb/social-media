@@ -9,35 +9,6 @@ export default function Messages() {
   const { users = [], setSelectedUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // const contacts = [
-  //   {
-  //     id: 1,
-  //     name: "John Warren",
-  //     username: "@john_warren",
-  //     avatar:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/19143ddd9f30eb76ab67c4e523545be83c7021c0?width=96",
-  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer Exploring life one step at a time. ✨ Staying curious. Creating with purpose.",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Richard Hendricks",
-  //     username: "@Richard Hendricks",
-  //     avatar:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/ecc9705e3ff5f8da53cd9c04e7cfaa07a6fb6029?width=96",
-  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer Exploring life one step at a time. ✨ Staying curious. Creating with purpose.",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Alexa james",
-  //     username: "@alexa_james",
-  //     imageUrl:
-  //       "https://api.builder.io/api/v1/image/assets/TEMP/7e9367888be9614f9efc4eeb7f9c7a94494a4c2c?width=96",
-  //     bio: "🌍 Dreamer | 📚 Learner | 🚀 Doer Exploring life one step at a time. ✨ Staying curious. Creating with purpose.",
-  //   },
-
-  //   ...users,
-  // ];
-
   return (
     <div className="min-h-screen bg-slate-50 py-6 px-4 sm:px-6 lg:px-12">
       <div className="max-w-4xl mx-auto">
