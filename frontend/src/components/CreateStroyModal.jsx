@@ -10,8 +10,12 @@ import { useAuth } from "@clerk/clerk-react";
 const CreateStoryModal = ({ open, onClose }) => {
   if (!open) return null;
 
-  const { bgCreateStoryModal, setBgCreateStoryModal, backendUrl } =
-    useContext(AuthContext);
+  const {
+    bgCreateStoryModal,
+    setBgCreateStoryModal,
+    backendUrl,
+    fetchStories,
+  } = useContext(AuthContext);
 
   const { getToken } = useAuth();
   const [text, setText] = useState(null);
@@ -97,6 +101,8 @@ const CreateStoryModal = ({ open, onClose }) => {
     } else {
       await uploadText();
     }
+
+    await fetchStories();
 
     // reset local states
     setFile(null);
