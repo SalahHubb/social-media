@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { assets } from "../assets/assets";
 
-const AUTO_CLOSE_MS = 5000; // total duration for a story
-
 const StoryViewer = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,27 +28,23 @@ const StoryViewer = () => {
   useEffect(() => {
     if (!story) return;
 
-    const tickMs = 50;
-
-    const steps = AUTO_CLOSE_MS / tickMs;
-
-    const increment = 100 / steps;
-
+    // i assumed total duration is 5s
     const iv = setInterval(() => {
-      setProgress((p) => {
-        const next = p + increment;
-        if (next >= 100) {
-          clearInterval(iv);
-          // small delay to show 100%
-          setTimeout(() => navigate(-1), 150);
-        }
-        return Math.min(100, next);
-      });
-    }, tickMs);
+      setProgress((prev) => {
+        const newProgress = prev === 0 ? 20 : prev + 20;
 
-    return () => {
-      clearInterval(iv);
-    };
+        if (newProgress <= 100) {
+          return newProgress;
+        } else {
+          // navigate home after story ends
+          clearInterval(iv);
+          navigate("/");
+          return;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(iv);
   }, [story, navigate]);
 
   if (!story) return null;
@@ -58,14 +52,6 @@ const StoryViewer = () => {
   const bgStyle = {
     background: "linear-gradient(180deg,#4F46E5 0%, #9810FA 100%)",
   };
-
-  // const bgStyle = story.mediaUrl
-  //   ? {
-  //       backgroundImage: `url(${story.mediaUrl})`,
-  //       backgroundSize: "cover",
-  //       backgroundPosition: "center",
-  //     }
-  //   : { background: "linear-gradient(180deg,#4F46E5 0%, #9810FA 100%)" };
 
   return (
     <div
@@ -78,7 +64,7 @@ const StoryViewer = () => {
       {/* progress bar */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-white/25">
         <div
-          className="h-full bg-white transition-all"
+          className="h-full bg-white transition-all duration-1000 ease-linear"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -114,11 +100,11 @@ const StoryViewer = () => {
         )}
 
         {!story.text && story.mediaUrl && (
-          <div className="w-full max-h-[80vh] overflow-hidden rounded-lg shadow-lg">
+          <div className="w-full h-[70vh] overflow-hidden rounded-lg shadow-lg">
             <img
               src={story.mediaUrl}
               alt="story"
-              className="w-full h-full object-cover max-h-[80vh]"
+              className="h-full w-full object-contain rounded-md"
             />
           </div>
         )}
@@ -128,3 +114,6 @@ const StoryViewer = () => {
 };
 
 export default StoryViewer;
+
+// object-cover = fill the container, may crop
+// object-contain = fit inside the container(center), may letterbox
