@@ -539,6 +539,7 @@ const AuthProvider = ({ children }) => {
     fetchFollowing,
     followers,
     following,
+    fetchStories,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
